@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	)
 
 type Gene struct {
@@ -9,11 +10,11 @@ type Gene struct {
 }
 
 func (g *Gene) Init(length int) {
-	//_code := ""
-	//for i:=0; i < length; i++ {
-	//	_code += "a"
-	//}
-	g._code = "hello world"
+	buff := make([]byte, length)
+	for i:=0; i < length; i++ {
+		buff[i]	= byte(rand.Intn(256))
+	}
+	g._code = string(buff)
 }
 
 func NewGene(length int) *Gene {
@@ -21,8 +22,6 @@ func NewGene(length int) *Gene {
 	g.Init(length)
 	return g
 }
-
-
 
 func (g *Gene) CalculateCost() {
 	for i:=0; i<len(g._code); i++ {
@@ -33,19 +32,19 @@ func (g *Gene) CalculateCost() {
 
 type Population struct {
 	_goal string
-	_members []Gene
+	_members [](*Gene)
 }
 
-func NewPopulation() *Population {
+func NewPopulation(numOfMember int, goal string) *Population {
 	p := new(Population)
-	p.Init()
+	p._goal = goal
+	p.Init(numOfMember)
 	return p
 }
 
-func (p *Population) Init() {
-	p._members = make([]Gene, 20)
-	for i:=0; i < len(p._members); i++ {
-		fmt.Print(p._members[i]._code)
+func (p *Population) Init(numOfMember int) {
+	for i:=0; i < numOfMember; i++ {
+		p._members = append(p._members, NewGene(len(p._goal)))
 		p._members[i].Init(len(p._goal))
 	}
 }
@@ -57,6 +56,6 @@ func (p *Population) Generation()  {
 }
 
 func main() {
-	population := NewPopulation()
+	population := NewPopulation(20, "Hello world")
 	population.Generation()
 }
