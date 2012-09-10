@@ -1,12 +1,14 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
+	"math"
 	"math/rand"
 	)
 
 type Gene struct {
 	_code string
+	_cost int
 }
 
 func (g *Gene) Init(length int) {
@@ -15,6 +17,7 @@ func (g *Gene) Init(length int) {
 		buff[i]	= byte(rand.Intn(256))
 	}
 	g._code = string(buff)
+	g._cost = 9999
 }
 
 func NewGene(length int) *Gene {
@@ -23,12 +26,12 @@ func NewGene(length int) *Gene {
 	return g
 }
 
-func (g *Gene) CalculateCost() {
+func (g *Gene) CalculateCost(answer string) {
+	g._cost = 0
 	for i:=0; i<len(g._code); i++ {
-		fmt.Println(g._code[i])
+		g._cost += int(math.Abs(float64(g._code[i] - answer[i])))
 	}
 }
-
 
 type Population struct {
 	_goal string
@@ -49,10 +52,21 @@ func (p *Population) Init(numOfMember int) {
 	}
 }
 
-func (p *Population) Generation()  {
+func (p *Population) Generation() {
+	// calculate cost
 	for i:=0; i<len(p._members); i++ {
-		p._members[i].CalculateCost()
+		p._members[i].CalculateCost(p._goal)
 	}
+
+	// sort by cost
+
+	// if the top score is feasible, finish !
+
+	// mate the best pair
+
+	// repalace the worst pair with the children
+
+	// mutate
 }
 
 func main() {

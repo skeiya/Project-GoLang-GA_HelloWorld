@@ -7,7 +7,6 @@ import (
 func TestGeneInit(t *testing.T) {
 	str := "Hello World"
 	g := NewGene(len(str))
-	g.Init(len(str))
 	if len(g._code) != len(str) {
 		t.Error("Gene Init Error:(%d, %d)",  len(g._code), len(str))
 	}
@@ -23,3 +22,14 @@ func TestPopulationInit(t *testing.T) {
 		t.Error("Population Init Error")
 	}
 }
+
+func TestGeneCost(t *testing.T) {
+	answer := "aaa"
+	g := NewGene(len(answer))
+	g._code = "aab"
+	g.CalculateCost(answer)
+	if (g._cost != 1) {
+		t.Error("CalculateCost Error")
+	}
+}
+
