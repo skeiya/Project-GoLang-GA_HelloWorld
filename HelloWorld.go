@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 	"math"
 	"math/rand"
 	"sort"
@@ -68,7 +68,13 @@ func (p *Population) Generation() {
 
 	// sort by cost
 	sort.Sort(p._members)
+
 	// if the top score is feasible, finish !
+	bestCode := p._members[0]
+	fmt.Println(bestCode)
+	if (bestCode._cost == 0) {
+		return
+	}
 
 	// mate the best pair
 
