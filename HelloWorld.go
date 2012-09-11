@@ -1,9 +1,10 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 	"math"
 	"math/rand"
+	"sort"
 	)
 
 type Gene struct {
@@ -33,9 +34,11 @@ func (g *Gene) CalculateCost(answer string) {
 	}
 }
 
+type GeneSlice []*Gene
+
 type Population struct {
 	_goal string
-	_members [](*Gene)
+	_members GeneSlice
 }
 
 func NewPopulation(numOfMember int, goal string) *Population {
@@ -52,6 +55,11 @@ func (p *Population) Init(numOfMember int) {
 	}
 }
 
+// Interface implement for Sort
+func (p GeneSlice) Len() int           { return len(p) }
+func (p GeneSlice) Less(i, j int) bool { return p[i]._cost < p[j]._cost }
+func (p GeneSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+
 func (p *Population) Generation() {
 	// calculate cost
 	for i:=0; i<len(p._members); i++ {
@@ -59,8 +67,14 @@ func (p *Population) Generation() {
 	}
 
 	// sort by cost
+	sort.Sort(p._members)
 
 	// if the top score is feasible, finish !
+	bestCode := p._members[0]
+	fmt.Println(bestCode)
+	if (bestCode._cost == 0) {
+		return
+	}
 
 	// mate the best pair
 

@@ -33,3 +33,23 @@ func TestGeneCost(t *testing.T) {
 	}
 }
 
+func TestSort(t *testing.T) {
+	p := NewPopulation(2, "aaa")
+	p._members[0]._code = "abb"
+	p._members[1]._code = "aab"
+	p.Generation()
+	if (p._members[0]._code != "aab" || p._members[1]._code != "abb") {
+		t.Error("Sort Error")
+	}
+}
+
+func TestEndCondition(t *testing.T) {
+	p := NewPopulation(2, "aaa")
+	p._members[0]._code = "abb"
+	p._members[1]._code = "aaa"
+	p.Generation()
+	if (p._members[0]._cost != 0) {
+		t.Error("EndCondition Error")
+	}
+
+}
