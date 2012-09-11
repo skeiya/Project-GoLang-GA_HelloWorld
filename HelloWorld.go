@@ -34,6 +34,16 @@ func (g *Gene) CalculateCost(answer string) {
 	}
 }
 
+func (g1 *Gene) Mate(g2 *Gene) (*Gene, *Gene) {
+	length := len(g1._code)
+	mid := length/2
+	g1_code := g1._code[0:mid] + g2._code[mid:length]
+	g2_code := g2._code[0:mid] + g1._code[mid:length]
+	g1._code = g1_code
+	g2._code = g2_code
+	return g1, g2
+}
+
 type GeneSlice []*Gene
 
 type Population struct {
@@ -77,8 +87,10 @@ func (p *Population) Generation() {
 	}
 
 	// mate the best pair
+	g1, g2 := p._members[0].Mate(p._members[1])
 
 	// repalace the worst pair with the children
+	p._members = append(p._members[0:len(p._members)-2], g1, g2)
 
 	// mutate
 }

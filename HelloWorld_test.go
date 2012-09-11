@@ -51,5 +51,16 @@ func TestEndCondition(t *testing.T) {
 	if (p._members[0]._cost != 0) {
 		t.Error("EndCondition Error")
 	}
+}
 
+func TestMate(t *testing.T) {
+	g1 := NewGene(5)
+	g1._code = "aaaaa"
+	g2 := NewGene(5)
+	g2._code = "bbbbb"
+
+	g1, g2 = g1.Mate(g2)
+	if (g1._code != "aabbb" || g2._code != "bbaaa") {
+		t.Error("Mate Error")
+	}
 }
