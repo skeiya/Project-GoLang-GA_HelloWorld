@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"sort"
 	)
 
 func TestGeneInit(t *testing.T) {
@@ -31,25 +32,38 @@ func TestGeneCost(t *testing.T) {
 	if (g._cost != 1) {
 		t.Error("CalculateCost Error")
 	}
+
+	g._code = "aaa"
+	g.CalculateCost(answer)
+	if (g._cost != 0) {
+		t.Error("CalculateCost Error0")
+	}
 }
 
 func TestSort(t *testing.T) {
-	p := NewPopulation(2, "aaa")
+	p := NewPopulation(3, "aaa")
 	p._members[0]._code = "abb"
 	p._members[1]._code = "aab"
-	p.Generation()
+	p._members[2]._code = "cab"
+	for i:=0; i<len(p._members); i++ {
+		p._members[i].CalculateCost("aaa")
+	}
+	sort.Sort(p._members)
 	if (p._members[0]._code != "aab" || p._members[1]._code != "abb") {
-		t.Error("Sort Error")
+		t.Error("Sort Error: " + p._members[0]._code + " <  " + p._members[1]._code)
 	}
 }
 
 func TestEndCondition(t *testing.T) {
-	p := NewPopulation(2, "aaa")
+	p := NewPopulation(5, "aaa")
 	p._members[0]._code = "abb"
-	p._members[1]._code = "aaa"
+	p._members[1]._code = "caa"
+	p._members[2]._code = "ada"
+	p._members[3]._code = "aae"
+	p._members[4]._code = "aaa"
 	p.Generation()
 	if (p._members[0]._cost != 0) {
-		t.Error("EndCondition Error")
+		t.Error("EndCondition Error: " + p._members[0]._code + " <  " + p._members[1]._code + " < " + p._members[2]._code + " < " + p._members[3]._code + " < " + p._members[4]._code)
 	}
 }
 

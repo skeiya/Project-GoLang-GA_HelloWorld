@@ -90,7 +90,7 @@ func (p *Population) Generation() {
 	g1, g2 := p._members[0].Mate(p._members[1])
 
 	// repalace the worst pair with the children
-	p._members = append(p._members[0:len(p._members)-2], g1, g2)
+	p._members = append(p._members[2:len(p._members)], g1, g2)
 
 	// mutate
 }
