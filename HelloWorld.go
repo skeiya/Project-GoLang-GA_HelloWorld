@@ -147,12 +147,21 @@ func (p *Population) Generation() bool {
 	return false
 }
 
-func main() {
-	population := NewPopulation(20, "Hello world. A-chan, Kashiyuka, Notchi!. Wellcome to the Perfume world. I have to make it more difficult problem. LOVE THE WORLD. Computer city. Electro world. a")
-	
+func Solve(c chan int, population *Population) {
 	for {
-		if population.Generation() {
-			return
+		if (population.Generation()) {
+			c <- 0
+			return;
 		}
 	}
+}
+
+func main() {
+	population := NewPopulation(20, "Hello world. A-chan, Kashiyuka, Notchi!. Wellcome to the Perfume world. I have to make it more difficult problem. LOVE THE WORLD. Computer city. Electro world. a")
+
+	c := make(chan int)
+
+	go Solve(c, population)
+
+	<- c
 }
