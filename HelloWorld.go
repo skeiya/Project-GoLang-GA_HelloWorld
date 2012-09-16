@@ -115,15 +115,7 @@ func (p GeneSlice) Len() int           { return len(p) }
 func (p GeneSlice) Less(i, j int) bool { return p[i]._cost < p[j]._cost }
 func (p GeneSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
-func (p *Population) Dump() {
-	for i:=2; i<len(p._members); i++ {
-		msg := fmt.Sprintf("(%d)", p._members[i]._cost)
-		fmt.Print(p._members[i]._code + msg + "   ")
-	}
-	fmt.Println("\n------------------------------------------------------------------\n")
-}
-
-func (p *Population) Generation() {
+func (p *Population) Generation() bool {
 	// calculate cost
 	for i:=0; i<len(p._members); i++ {
 		p._members[i].CalculateCost(p._goal)
@@ -134,10 +126,10 @@ func (p *Population) Generation() {
 
 	// if the top score is feasible, finish !
 	bestCode := p._members[0]
-	fmt.Print("top:" + p._members[0]._code + "," + p._members[1]._code)
-	fmt.Printf(" (%d, %d), generation=%d\n",p._members[0]._cost, p._members[1]._cost, p._generation)
+	fmt.Print("top:" + p._members[0]._code)
+	fmt.Printf(" (%d), generation=%d\n",p._members[0]._cost, p._generation)
 	if (bestCode._cost == 0) {
-		return
+		return true
 	}
 
 	// mate the best pair
@@ -152,10 +144,15 @@ func (p *Population) Generation() {
 	}
 
 	p._generation++
-	p.Generation()
+	return false
 }
 
 func main() {
-	population := NewPopulation(20, "Hello world")
-	population.Generation()
+	population := NewPopulation(20, "Hello world. A-chan, Kashiyuka, Notchi!. Wellcome to the Perfume world. I have to make it more difficult problem. LOVE THE WORLD. Computer city. Electro world. a")
+	
+	for {
+		if population.Generation() {
+			return
+		}
+	}
 }
