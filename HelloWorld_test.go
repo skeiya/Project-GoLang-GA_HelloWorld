@@ -25,15 +25,15 @@ func TestPopulationInit(t *testing.T) {
 }
 
 func TestGeneCost(t *testing.T) {
-	answer := "aaa"
+	answer := "hellow"
 	g := NewGene(len(answer))
-	g._code = "aab"
+	g._code = "heklo"
 	g.CalculateCost(answer)
 	if (g._cost != 1) {
 		t.Error("CalculateCost Error")
 	}
 
-	g._code = "aaa"
+	g._code = "hello"
 	g.CalculateCost(answer)
 	if (g._cost != 0) {
 		t.Error("CalculateCost Error0")
@@ -76,5 +76,20 @@ func TestMate(t *testing.T) {
 	g1, g2 = g1.Mate(g2)
 	if (g1._code != "aabbb" || g2._code != "bbaaa") {
 		t.Error("Mate Error")
+	}
+}
+
+func TestMutate(t *testing.T) {
+	g := NewGene(5)
+	g._code = "hello"
+	org := g._code
+	g.Mutate(1)
+	if (len(org) != len(g._code)) {
+		t.Error("len error:" + org + "->" + g._code)
+	}
+	g.CalculateCost(org)
+	if (1 != g._cost) {
+		t.Error(g._code)
+		t.Errorf("Mutate Error:%d", g._cost)
 	}
 }
